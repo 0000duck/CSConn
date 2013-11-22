@@ -1,0 +1,9 @@
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\bin\Release\socketClient_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\bin\Release\socketClient_win.pdb
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\ResolveAssemblyReference.cache
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\socketClient_win.Form1.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\socketClient_win.Properties.Resources.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\GenerateResource.read.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\GenerateResource.write.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\socketClient_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Release\socketClient_win.pdb
