@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Diagnostics;
+using System.Web.Script.Serialization;
 
 namespace socketServer_win {
     public partial class Form1 : Form {
@@ -64,11 +65,15 @@ namespace socketServer_win {
                 Socket aSocket = serverS.Accept();
 
                 clientList.Add(aSocket);
-                showCliList();
+                cliList_live = this.getConnctedCli();
+                this.showCliList(cliList_live);
+                this.sendOnlineListToCli(cliList_live);
+
                 appendToHistory("连接来自" + aSocket.RemoteEndPoint.ToString() + "\n");
 
-                Byte[] msgByte = Encoding.UTF8.GetBytes("这里是服务端");
-                aSocket.Send(msgByte);
+
+                MsgData md = new MsgData("这里是服务端");
+                this.sendMsgData(md, aSocket);
 
                 Thread newThread = new Thread(RecieveMsg);
                 newThread.IsBackground = true;
@@ -86,16 +91,34 @@ namespace socketServer_win {
                     Byte[] res = new Byte[byteLength];
                     int length = aSocket.Receive(res);
                     String resString = Encoding.UTF8.GetString(res, 0, length);
-                    appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
+                    appendToHistory("Msg -来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
                 }
                 catch (Exception ex) {
                     appendToHistory("异常：" + ex.Message + "\n");
                     aSocket.Shutdown(SocketShutdown.Both);
                     aSocket.Close();
-                    this.showCliList();
+                    cliList_live = this.getConnctedCli();
+                    this.showCliList(cliList_live);
+                    this.sendOnlineListToCli(cliList_live);
                     break;
                 }
             }
+        }
+
+        /**
+         * 发送在线客户端地址给，所有在线客户端
+         */
+        public void sendOnlineListToCli(List<Socket> cliList) {
+            String cliString = "";
+            foreach (Socket so in cliList) {
+                cliString = cliString + so.RemoteEndPoint.ToString() + "&";
+            }
+            if (cliString.Length > 0) {
+                cliString = cliString.Substring(0, cliString.Length - 1);
+            }
+            MsgData md = new MsgData("", cliString);
+
+            this.sendMsgData(md, cliList);
         }
 
         /**
@@ -132,9 +155,10 @@ namespace socketServer_win {
         /**
          * 增加客户端列表 ListBox
          */
+        private delegate void addListInvokeCallback(String msg);
         public void addToClientList_lb(String msg) {
             if (checked_lb_client.InvokeRequired) {
-                InvokeCallback callback = new InvokeCallback(addToClientList_lb);
+                addListInvokeCallback callback = new addListInvokeCallback(addToClientList_lb);
                 checked_lb_client.Invoke(callback, msg);
             }
             else {
@@ -156,18 +180,14 @@ namespace socketServer_win {
             }
         }
 
-
-
-
         /**
          * 显示连接状态的客户端
          */
-        public void showCliList() {
+        public void showCliList(List<Socket> cliList) {
             clearClientList_lb();
-            cliList_live = this.getConnctedCli();
 
-            for (int i = 0; i < cliList_live.Count; i++) {
-                String cliAddress = cliList_live[i].RemoteEndPoint.ToString();
+            for (int i = 0; i < cliList.Count; i++) {
+                String cliAddress = cliList[i].RemoteEndPoint.ToString();
                 String cliInfo = i + ". " + cliAddress;
                 addToClientList_lb(cliInfo);
             }
@@ -194,7 +214,8 @@ namespace socketServer_win {
                 appendToHistory("请选择发送对象\n");
                 return;
             }
-            this.sendMsg(msg, sendList);
+            MsgData md = new MsgData(msg);
+            this.sendMsgData(md, sendList);
 
             //显示发送信息
             tb_history.AppendText("服务端 - 发往");
@@ -207,12 +228,24 @@ namespace socketServer_win {
         }
 
         /**
-         * 发送消息
+         * 发送消息 - MsgData
          */
-        public void sendMsg(String msgStr, List<Socket> sendList) {
-            foreach (Socket so in sendList) { 
-                Byte[] msgByte = Encoding.UTF8.GetBytes(msgStr);
-                so.Send(msgByte);
+        public void sendMsgData(MsgData md, Socket so) {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            String mdString = json.Serialize(md);
+
+            so.Send(Encoding.UTF8.GetBytes(mdString));
+        }
+
+        /**
+         * 发送消息 - MsgData
+         */
+        public void sendMsgData(MsgData md, List<Socket> sendList) {
+            foreach (Socket so in sendList) {
+                JavaScriptSerializer json = new JavaScriptSerializer();
+                String mdString = json.Serialize(md);
+                Debug.WriteLine("");
+                so.Send(Encoding.UTF8.GetBytes(mdString));
             }
         }
 

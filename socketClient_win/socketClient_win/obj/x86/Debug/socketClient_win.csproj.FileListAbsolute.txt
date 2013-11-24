@@ -16,3 +16,12 @@ E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketCl
 E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Properties.Resources.resources
 E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Users\octopus\documents\visual studio 2010\Projects\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.pdb
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\bin\Debug\socketClient_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\bin\Debug\socketClient_win.pdb
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Form1.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Properties.Resources.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.write.1.tlog

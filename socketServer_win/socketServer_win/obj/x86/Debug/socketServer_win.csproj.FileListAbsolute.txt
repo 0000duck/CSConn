@@ -16,3 +16,12 @@ E:\Users\octopus\documents\visual studio 2010\Projects\socketServer_win\socketSe
 E:\Users\octopus\documents\visual studio 2010\Projects\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Properties.Resources.resources
 E:\Users\octopus\documents\visual studio 2010\Projects\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Users\octopus\documents\visual studio 2010\Projects\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.pdb
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\bin\Debug\socketServer_win.exe
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\bin\Debug\socketServer_win.pdb
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Form1.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Properties.Resources.resources
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.read.1.tlog
+E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.write.1.tlog

@@ -75,9 +75,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(498, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(89, 12);
             this.label2.TabIndex = 5;
-            this.label2.Text = "客户端列表";
+            this.label2.Text = "在线客户端列表";
             // 
             // button2
             // 

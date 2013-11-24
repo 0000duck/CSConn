@@ -32,6 +32,8 @@
             this.tb_msg = new System.Windows.Forms.RichTextBox();
             this.tb_port = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checked_lb_online = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // tb_server_id
@@ -116,11 +118,30 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "：";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(412, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "在线客户端";
+            // 
+            // checked_lb_online
+            // 
+            this.checked_lb_online.FormattingEnabled = true;
+            this.checked_lb_online.Location = new System.Drawing.Point(400, 53);
+            this.checked_lb_online.Name = "checked_lb_online";
+            this.checked_lb_online.Size = new System.Drawing.Size(157, 276);
+            this.checked_lb_online.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(580, 402);
+            this.Controls.Add(this.checked_lb_online);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tb_port);
             this.Controls.Add(this.tb_msg);
@@ -131,7 +152,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tb_server_id);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "客户端";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,6 +169,8 @@
         private System.Windows.Forms.RichTextBox tb_msg;
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckedListBox checked_lb_online;
     }
 }
 
