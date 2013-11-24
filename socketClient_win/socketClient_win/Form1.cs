@@ -118,35 +118,62 @@ namespace socketClient_win {
             return this.clientS;
         }
 
-        ///**
-        // * 发送信息给在线客户端  --- 待改进 --
-        // */
-        //public void sendMsg2OnlineCli(String msg)
-        //{
-        //    List<String> target = this.getSendTarget();
-        //    foreach (String ipAndPort in target)
-        //    {
-        //        Socket so = this.connectTarget(ipAndPort);
+        /**
+         * 发送信息给在线客户端  
+         * 返回 List<string> failedList
+         */
+        public List<string> sendMsg2OnlineCli(String msg) {
+            List<string> failedList = new List<string>();
 
-        //        try {
-        //            so.Send(Encoding.UTF8.GetBytes(msg));
-        //            appendToHistory("发给:\n" + so.RemoteEndPoint.ToString() + "\n");
-        //        }
-        //        catch (Exception ex) {
-        //            appendToHistory("send异常" + ex.Message);
-        //            if (so == null) {
-        //                return;
-        //            }
-        //            this.closeTheClose(so);
-        //        }
-        //    }
-        //}
+            List<IPEndPoint> target = this.getSendTarget();
+
+            foreach (IPEndPoint ipPort in target) {
+                Socket so = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                try {
+                    so.Connect(ipPort);
+                    so.Send(Encoding.UTF8.GetBytes(msg));
+                }
+                catch (Exception ex) {
+                    String ipAndPort = "";  //ip address ----- 
+                    string error = ipAndPort + "发送失败\n" + ex.Message;
+                    failedList.Add(error);
+
+                    if (so == null) {
+                        continue;
+                    }
+                    this.closeTheClose(so);
+                }
+            }
+
+            return failedList;
+        }
 
         /**
-        * 和发送目标建立连接, 并返回连接的Socket
+        * 获得发送目标
         */
-        public Socket connectTarget(string ipAndPort)
-        {
+        public List<IPEndPoint> getSendTarget() {
+            List<IPEndPoint> sendTarget = new List<IPEndPoint>();
+            for (int i = 0; i < checked_lb_online.Items.Count; i++) {
+                if (checked_lb_online.GetItemChecked(i) == false) {
+                    continue;
+                }
+                String clientInfo = checked_lb_online.GetItemText(checked_lb_online.Items[i]);
+                String[] info = clientInfo.Split('.');
+
+                //此处 +2 是魔术数字，要根据现实界面而更改
+                String ipAndPort = clientInfo.Substring(info[0].Length + 2);
+                IPEndPoint ipPoint = this.translateIpEndPoint(ipAndPort);
+
+                sendTarget.Add(ipPoint);
+            }
+            return sendTarget;
+        }
+
+        /**
+         * String 转换为 IPEndPoint
+         */
+        public IPEndPoint translateIpEndPoint(String ipAndPort) {
             String[] info = ipAndPort.Split(':');
             String ipStr = info[0];
             String portStr = info[1];
@@ -155,10 +182,7 @@ namespace socketClient_win {
             IPAddress ip = IPAddress.Parse(ipStr);
             IPEndPoint ipPort = new IPEndPoint(ip, port);
 
-            Socket soOther = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            soOther.Connect(ipPort);
-
-            return soOther;
+            return ipPort;
         }
 
 
@@ -168,92 +192,86 @@ namespace socketClient_win {
 
 
 
-        ///**
-        // * 获得发送对象地址 
-        // */
-        //public IPEndPoint getTargetAddr(String ipAndPort)
-        //{
-        //    String[] ipInfo = ipAndPort.Split(':');
-        //    String sendIp = ipInfo[0];
-        //    string portStr = ipInfo[1];
-        //    int port = int.Parse(portStr);
+        /**
+         * 获得发送对象地址 
+         */
+        public IPEndPoint getTargetAddr(String ipAndPort) {
+            String[] ipInfo = ipAndPort.Split(':');
+            String sendIp = ipInfo[0];
+            string portStr = ipInfo[1];
+            int port = int.Parse(portStr);
 
-        //    IPAddress ip = IPAddress.Parse(sendIp);
-        //    IPEndPoint ipPort = new IPEndPoint(ip, port);
+            IPAddress ip = IPAddress.Parse(sendIp);
+            IPEndPoint ipPort = new IPEndPoint(ip, port);
 
-        //    return ipPort;
-        //}
+            return ipPort;
+        }
 
-        ///**
-        // * 启动监听
-        // * obj 应该是 IPEndPoint 对象
-        // */
-        //public void startListen()
-        //{
-        //    //IPAddress[] ipArr = Dns.GetHostAddresses(Dns.GetHostName());
-        //    String ipStr = "127.0.0.1";
-        //    IPAddress localIp = IPAddress.Parse(ipStr);
-        //    Port portObj = new Port();
-        //    listenPort = portObj.GetFirstAvailablePort();
-        //    IPEndPoint ipPoint = new IPEndPoint(localIp, listenPort);
+        /**
+         * 启动监听
+         * obj 应该是 IPEndPoint 对象
+         */
+        public void startListen() {
+            //IPAddress[] ipArr = Dns.GetHostAddresses(Dns.GetHostName());
+            String ipStr = "127.0.0.1";
+            IPAddress localIp = IPAddress.Parse(ipStr);
+            Port portObj = new Port();
+            listenPort = portObj.GetFirstAvailablePort();
+            IPEndPoint ipPoint = new IPEndPoint(localIp, listenPort);
 
-        //    listenS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        //    listenS.Bind(ipPoint);
-        //    listenS.Listen(maxCount);
+            listenS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listenS.Bind(ipPoint);
+            listenS.Listen(maxCount);
 
-        //    Thread newThread = new Thread(listenConn);
-        //    newThread.IsBackground = true;
-        //    newThread.Start();
+            Thread newThread = new Thread(listenConn);
+            newThread.IsBackground = true;
+            newThread.Start();
 
-        //}
+        }
 
-        ///**
-        // * 监听连接
-        // */
-        //public void listenConn()
-        //{
-        //    while (true)
-        //    {
-        //        Socket aSocket = listenS.Accept();
+        /**
+         * 监听连接
+         */
+        public void listenConn() {
+            while (true) {
+                Socket aSocket = listenS.Accept();
+                appendToHistory("连接来自[" + aSocket.RemoteEndPoint.ToString() + "]\n");
 
-        //        appendToHistory("连接来自[" + aSocket.RemoteEndPoint.ToString() + "]\n");
+                //sendMsg(String s, Socket so);方法已删除，自己在生成
+                //this.sendMsg("这里是" + aSocket.LocalEndPoint.ToString() + "\n", aSocket);
 
-        //        //sendMsg(String s, Socket so);方法已删除，自己在生成
-        //        this.sendMsg("这里是" + aSocket.LocalEndPoint.ToString() + "\n", aSocket);
+                Thread newThread = new Thread(ReceiveMsg);
+                newThread.IsBackground = true;
+                newThread.Start(aSocket);
+            }
+        }
 
-        //        Thread newThread = new Thread(ReceiveMsg);
-        //        newThread.IsBackground = true;
-        //        newThread.Start(aSocket);
-        //    }
-        //}
-
-        ///**
-        // * 接受信息
-        // */
-        //public void ReceiveMsg(Object obj)
-        //{
-        //    //Socket aSocket = (Socket)obj;
-        //    //while (true) {
-        //    //    try {
-        //    //        Byte[] res = new Byte[bytLength];
-        //    //        int length = aSocket.Receive(res);
-        //    //        String resString = Encoding.UTF8.GetString(res, 0, length);
-        //    //        appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString);
-        //    //    }
-        //    //    catch (Exception ex) {
-        //    //        appendToHistory("receive异常：" + ex.Message + "\n");
-        //    //        appendToHistory("断开与" + aSocket.RemoteEndPoint.ToString() + "连接\n");
-        //    //        aSocket.Shutdown(SocketShutdown.Both);
-        //    //        aSocket.Close();
-        //    //        break;
-        //    //    }
-        //    //}
-        //}
+        /**
+         * 接受信息
+         */
+        public void ReceiveMsg(Object obj) {
+            Socket aSocket = (Socket)obj;
+            while (true) {
+                try {
+                    Byte[] res = new Byte[bytLength];
+                    int length = aSocket.Receive(res);
+                    String resString = Encoding.UTF8.GetString(res, 0, length);
+                    appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString);
+                }
+                catch (Exception ex) {
+                    appendToHistory("receive异常：" + ex.Message + "\n");
+                    appendToHistory("断开与" + aSocket.RemoteEndPoint.ToString() + "连接\n");
+                    aSocket.Shutdown(SocketShutdown.Both);
+                    aSocket.Close();
+                    break;
+                }
+            }
+        }
 
 
 
 
-        /********************************************************** 和界面的操作，与Socket无关 ********/
+        /********************************************************** 界面的操作，与Socket无关 ********/
 
         private void btn_send_Click(object sender, EventArgs e) {
             String msg = this.getMsgContent();
@@ -262,7 +280,10 @@ namespace socketClient_win {
                 return;
             }
 
-            //this.sendMsg2OnlineCli(msg);
+            List<string> failed = this.sendMsg2OnlineCli(msg);
+            foreach (string error in failed) {
+                appendToHistory("sendCli异常：" + error);
+            }
 
             //发消息给客户端
             try {
@@ -341,24 +362,7 @@ namespace socketClient_win {
             return ipPort;
         }
 
-        /**
-        * 获得发送目标
-        */
-        public List<String> getSendTarget() {
-            List<string> sendTarget = new List<string>();
-            for (int i = 0; i < checked_lb_online.Items.Count; i++) {
-                if (checked_lb_online.GetItemChecked(i) == false) {
-                    continue;
-                }
-                String clientInfo = checked_lb_online.GetItemText(checked_lb_online.Items[i]);
-                String[] info = clientInfo.Split('.');
 
-                //此处 +2 是魔术数字，要根据现实界面而更改
-                String ipAndPort = clientInfo.Substring(info[0].Length + 2);
-                sendTarget.Add(ipAndPort);
-            }
-            return sendTarget;
-        }
 
         /**
         * 获得发送内容
