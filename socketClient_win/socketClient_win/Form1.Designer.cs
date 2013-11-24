@@ -34,6 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.checked_lb_online = new System.Windows.Forms.CheckedListBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tb_server_id
@@ -135,11 +136,22 @@
             this.checked_lb_online.Size = new System.Drawing.Size(157, 276);
             this.checked_lb_online.TabIndex = 10;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(310, 52);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(63, 25);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "暂停";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(580, 402);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.checked_lb_online);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -171,6 +183,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckedListBox checked_lb_online;
+        private System.Windows.Forms.Button button1;
     }
 }
 

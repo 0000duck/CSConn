@@ -25,3 +25,11 @@ E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\s
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Properties.Resources.resources
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketServer_win\socketServer_win\obj\x86\Debug\GenerateResource.write.1.tlog
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.exe
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.pdb
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\bin\Debug\socketServer_win.exe
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\bin\Debug\socketServer_win.pdb
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.csprojResolveAssemblyReference.cache
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Form1.resources
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.Properties.Resources.resources
+F:\garrison\git\CSConn\socketServer_win\socketServer_win\obj\x86\Debug\socketServer_win.csproj.GenerateResource.Cache

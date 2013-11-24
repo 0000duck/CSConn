@@ -25,13 +25,14 @@
         private void InitializeComponent() {
             this.tb_history = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_send = new System.Windows.Forms.Button();
             this.tb_msg = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btn_startServer = new System.Windows.Forms.Button();
             this.tb_port = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.checked_lb_client = new System.Windows.Forms.CheckedListBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tb_history
@@ -52,15 +53,15 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "历史记录";
             // 
-            // button1
+            // btn_send
             // 
-            this.button1.Location = new System.Drawing.Point(399, 332);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(64, 26);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "发送";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btn_send.Location = new System.Drawing.Point(399, 332);
+            this.btn_send.Name = "btn_send";
+            this.btn_send.Size = new System.Drawing.Size(64, 26);
+            this.btn_send.TabIndex = 3;
+            this.btn_send.Text = "发送";
+            this.btn_send.UseVisualStyleBackColor = true;
+            this.btn_send.Click += new System.EventHandler(this.btn_send_Click);
             // 
             // tb_msg
             // 
@@ -79,15 +80,15 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "在线客户端列表";
             // 
-            // button2
+            // btn_startServer
             // 
-            this.button2.Location = new System.Drawing.Point(390, 22);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 26);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "启动服务";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btn_startServer.Location = new System.Drawing.Point(390, 22);
+            this.btn_startServer.Name = "btn_startServer";
+            this.btn_startServer.Size = new System.Drawing.Size(72, 26);
+            this.btn_startServer.TabIndex = 6;
+            this.btn_startServer.Text = "启动服务";
+            this.btn_startServer.UseVisualStyleBackColor = true;
+            this.btn_startServer.Click += new System.EventHandler(this.button2_Click);
             // 
             // tb_port
             // 
@@ -115,22 +116,33 @@
             this.checked_lb_client.Size = new System.Drawing.Size(169, 308);
             this.checked_lb_client.TabIndex = 9;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(94, 16);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(64, 26);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "暂停";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 489);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.checked_lb_client);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tb_port);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btn_startServer);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tb_msg);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_send);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tb_history);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "服务器";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,13 +152,14 @@
 
         private System.Windows.Forms.RichTextBox tb_history;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_send;
         private System.Windows.Forms.RichTextBox tb_msg;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_startServer;
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckedListBox checked_lb_client;
+        private System.Windows.Forms.Button button3;
     }
 }
 

@@ -25,3 +25,11 @@ E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\s
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Properties.Resources.resources
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Users\octopus\documents\visual studio 2010\Projects\CSconn\socketClient_win\socketClient_win\obj\x86\Debug\GenerateResource.write.1.tlog
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.exe
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.pdb
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\bin\Debug\socketClient_win.exe
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\bin\Debug\socketClient_win.pdb
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.csprojResolveAssemblyReference.cache
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Form1.resources
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.Properties.Resources.resources
+F:\garrison\git\CSConn\socketClient_win\socketClient_win\obj\x86\Debug\socketClient_win.csproj.GenerateResource.Cache
