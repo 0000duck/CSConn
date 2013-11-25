@@ -20,7 +20,7 @@ namespace socketClient_win {
         private Socket listenS;
         private byte[] result = new byte[1000];
         private int maxCount = 10;
-        private int listenPort = 51888;
+        private int listenPort;
         private int bytLength = 1000;
 
         private StreamReader streamR;
@@ -56,6 +56,7 @@ namespace socketClient_win {
             NetworkStream ns = new NetworkStream(clientS);
             streamR = new StreamReader(ns);
             streamW = new StreamWriter(ns);
+
         }
 
         /**
@@ -100,6 +101,29 @@ namespace socketClient_win {
             MsgData md = json.Deserialize<MsgData>(mdString);
 
             return md;
+        }
+
+        /**
+        * 接受信息  
+        */
+        public void ReceiveMsg(Object obj) {
+            Socket aSocket = (Socket)obj;
+            while (true) {
+                try {
+                    Byte[] res = new Byte[bytLength];
+                    int length = aSocket.Receive(res);
+                    String resString = Encoding.UTF8.GetString(res, 0, length);
+
+                    appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
+                }
+                catch (Exception ex) {
+                    appendToHistory("receive异常：" + ex.Message + "\n");
+                    appendToHistory("断开与" + aSocket.RemoteEndPoint.ToString() + "连接\n");
+                    aSocket.Shutdown(SocketShutdown.Both);
+                    aSocket.Close();
+                    break;
+                }
+            }
         }
 
         /**************************************************** Socket 接受消息 *************/////////////
@@ -191,33 +215,23 @@ namespace socketClient_win {
 
 
 
-
-        /**
-         * 获得发送对象地址 
-         */
-        public IPEndPoint getTargetAddr(String ipAndPort) {
-            String[] ipInfo = ipAndPort.Split(':');
-            String sendIp = ipInfo[0];
-            string portStr = ipInfo[1];
-            int port = int.Parse(portStr);
-
-            IPAddress ip = IPAddress.Parse(sendIp);
-            IPEndPoint ipPort = new IPEndPoint(ip, port);
-
-            return ipPort;
-        }
+        /*************************************************************** 监听等待连接 ******************/
+        /*************************************************************** 和连接 Server 同一接口 ********/
 
         /**
          * 启动监听
          * obj 应该是 IPEndPoint 对象
          */
-        public void startListen() {
-            //IPAddress[] ipArr = Dns.GetHostAddresses(Dns.GetHostName());
-            String ipStr = "127.0.0.1";
-            IPAddress localIp = IPAddress.Parse(ipStr);
+        public void startListen_thread() {
+            IPAddress[] ipArr = Dns.GetHostAddresses(Dns.GetHostName());
+
+            //String ipStr = "127.0.0.1";
+            //IPAddress localIp = IPAddress.Parse(ipStr);
+            IPAddress localIp = ipArr[1];
             Port portObj = new Port();
-            listenPort = portObj.GetFirstAvailablePort();
-            IPEndPoint ipPoint = new IPEndPoint(localIp, listenPort);
+
+            int localPort = getLocalPort(clientS);
+            IPEndPoint ipPoint = new IPEndPoint(localIp, localPort);
 
             listenS = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             listenS.Bind(ipPoint);
@@ -226,8 +240,21 @@ namespace socketClient_win {
             Thread newThread = new Thread(listenConn);
             newThread.IsBackground = true;
             newThread.Start();
-
         }
+
+        /**
+         * 获得和服务器连接的端口
+         */
+        public int getLocalPort(Socket so) {
+            String ipAndPort = so.LocalEndPoint.ToString();
+            String[] info = ipAndPort.Split(':');
+            String portStr = info[1];
+            int port = int.Parse(portStr);
+
+            return port;
+        }
+
+
 
         /**
          * 监听连接
@@ -245,31 +272,6 @@ namespace socketClient_win {
                 newThread.Start(aSocket);
             }
         }
-
-        /**
-         * 接受信息
-         */
-        public void ReceiveMsg(Object obj) {
-            Socket aSocket = (Socket)obj;
-            while (true) {
-                try {
-                    Byte[] res = new Byte[bytLength];
-                    int length = aSocket.Receive(res);
-                    String resString = Encoding.UTF8.GetString(res, 0, length);
-                    appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString);
-                }
-                catch (Exception ex) {
-                    appendToHistory("receive异常：" + ex.Message + "\n");
-                    appendToHistory("断开与" + aSocket.RemoteEndPoint.ToString() + "连接\n");
-                    aSocket.Shutdown(SocketShutdown.Both);
-                    aSocket.Close();
-                    break;
-                }
-            }
-        }
-
-
-
 
         /********************************************************** 界面的操作，与Socket无关 ********/
 
@@ -295,7 +297,12 @@ namespace socketClient_win {
                 if (getClientS() == null) {
                     return;
                 }
-                this.closeClientS();
+                try {
+                    this.closeClientS();
+                }
+                catch (Exception excep) {
+                    appendToHistory("close异常" + excep.Message);
+                }
             }
 
             tb_msg.Text = "";
@@ -313,10 +320,15 @@ namespace socketClient_win {
                 this.conn(ipPoint);
                 appendToHistory("服务器连接成功\n");
 
-                //开新线程接受
+                //开新线程 - 接受信息
                 Thread newThread = new Thread(ReceiveServerMsg_thread);
                 newThread.IsBackground = true;
                 newThread.Start();
+
+                Thread listenThread = new Thread(startListen_thread);
+                listenThread.IsBackground = true;
+                listenThread.Start();
+
             }
             catch (Exception ex) {
                 appendToHistory("连接失败\n失败原因：" + ex.Message.ToString());

@@ -16,7 +16,6 @@ using System.IO;
 namespace socketServer_win {
     public partial class Form1 : Form {
 
-        private string ipStr = "127.0.0.1";
         private Socket serverS;
         private int maxCliCount = 10;
         private int byteLength = 1000;
@@ -30,19 +29,28 @@ namespace socketServer_win {
         }
 
         private void button2_Click(object sender, EventArgs e) {
+            String ipStr = this.getIP();
             int port = this.getPort();
-            this.startServer(port);
+            this.startServer(ipStr, port);
+        }
+        
+        /**
+         * 获得ip 
+         */
+        public string getIP() {
+            string ip = tb_ip.Text;
+
+            return ip;
         }
 
         /**
          * 启动服务
          */
-        public void startServer(int port) {
+        public void startServer(string ipStr, int port) {
             IPAddress ip = IPAddress.Parse(ipStr);
             IPEndPoint ipPoint = new IPEndPoint(ip, port);
             if (serverS != null) {
-                String serverAddr = serverS.LocalEndPoint.ToString();
-                appendToHistory("已启动监听 " + serverAddr + "\n");
+                appendToHistory("已启动监听\n");
                 return;
             }
 

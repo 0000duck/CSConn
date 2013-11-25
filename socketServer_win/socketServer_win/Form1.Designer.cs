@@ -30,14 +30,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btn_startServer = new System.Windows.Forms.Button();
             this.tb_port = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.checked_lb_client = new System.Windows.Forms.CheckedListBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.tb_ip = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tb_history
             // 
-            this.tb_history.Location = new System.Drawing.Point(20, 58);
+            this.tb_history.Location = new System.Drawing.Point(20, 70);
             this.tb_history.Name = "tb_history";
             this.tb_history.Size = new System.Drawing.Size(445, 246);
             this.tb_history.TabIndex = 0;
@@ -82,9 +82,9 @@
             // 
             // btn_startServer
             // 
-            this.btn_startServer.Location = new System.Drawing.Point(390, 22);
+            this.btn_startServer.Location = new System.Drawing.Point(386, 18);
             this.btn_startServer.Name = "btn_startServer";
-            this.btn_startServer.Size = new System.Drawing.Size(72, 26);
+            this.btn_startServer.Size = new System.Drawing.Size(78, 32);
             this.btn_startServer.TabIndex = 6;
             this.btn_startServer.Text = "启动服务";
             this.btn_startServer.UseVisualStyleBackColor = true;
@@ -94,46 +94,43 @@
             // 
             this.tb_port.Location = new System.Drawing.Point(304, 22);
             this.tb_port.Name = "tb_port";
-            this.tb_port.ReadOnly = true;
             this.tb_port.Size = new System.Drawing.Size(63, 21);
             this.tb_port.TabIndex = 7;
             this.tb_port.Text = "8889";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(234, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 12);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "监听端口";
-            // 
             // checked_lb_client
             // 
             this.checked_lb_client.FormattingEnabled = true;
-            this.checked_lb_client.Location = new System.Drawing.Point(500, 58);
+            this.checked_lb_client.Location = new System.Drawing.Point(500, 88);
             this.checked_lb_client.Name = "checked_lb_client";
             this.checked_lb_client.Size = new System.Drawing.Size(169, 308);
             this.checked_lb_client.TabIndex = 9;
             // 
-            // button3
+            // tb_ip
             // 
-            this.button3.Location = new System.Drawing.Point(94, 16);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(64, 26);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "暂停";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.tb_ip.Location = new System.Drawing.Point(179, 22);
+            this.tb_ip.Name = "tb_ip";
+            this.tb_ip.Size = new System.Drawing.Size(113, 21);
+            this.tb_ip.TabIndex = 10;
+            this.tb_ip.Text = "127.0.0.1";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(99, 26);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "服务器地址";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(696, 489);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.checked_lb_client);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.tb_ip);
+            this.Controls.Add(this.checked_lb_client);
             this.Controls.Add(this.tb_port);
             this.Controls.Add(this.btn_startServer);
             this.Controls.Add(this.label2);
@@ -157,9 +154,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_startServer;
         private System.Windows.Forms.TextBox tb_port;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckedListBox checked_lb_client;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox tb_ip;
+        private System.Windows.Forms.Label label3;
     }
 }
 
