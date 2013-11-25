@@ -40,7 +40,9 @@ namespace socketClient_win {
 
             //发消息给服务端
             try {
-                cliS.send2Server(msg);
+                MsgData md = new MsgData();
+                md.msg = msg;
+                cliS.send2Server(md);
             }
             catch (Exception ex) {
                 appendToHistory("sendServer异常:" + ex.Message);
@@ -243,14 +245,19 @@ namespace socketClient_win {
 
         /*********************************************************** UI修改函数 *******/
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Debug.WriteLine("");
+        private void button1_Click(object sender, EventArgs e){
         }
 
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
+            this.closeAllRes();
+        }
 
+        /**
+         * 关闭所有资源
+         */
+        public void closeAllRes() {
+            cliS.closeResourse();
         }
 
         private void btn_file_Click(object sender, EventArgs e) {

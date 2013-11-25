@@ -37,15 +37,7 @@ namespace socketClient_win {
 
         }
 
-        /**
-        * 接受服务端信息
-        */
-        public MsgData receiveServerMsgData() {
-            string resultStr = streamR.ReadLine();
-            MsgData md = Socket_Cli.DeserializeMsg(resultStr);
 
-            return md;
-        }
 
         /**
         * 关闭和服务器的Socket
@@ -58,8 +50,21 @@ namespace socketClient_win {
         /**
          * 客户端发送消息
          */ 
-        public void send2Server(string msg) {
-            so.Send(Encoding.UTF8.GetBytes(msg));
+        public void send2Server(MsgData md) {
+            String mdString = Socket_Cli.SerializeMsg(md);
+            streamW.WriteLine(mdString);
+            streamW.Flush();
+
+        }
+
+        /**
+         * 接受服务端信息 -- StreamReader
+         */
+        public MsgData receiveServerMsgData() {
+            string resultStr = streamR.ReadLine();
+            MsgData md = Socket_Cli.DeserializeMsg(resultStr);
+
+            return md;
         }
 
         /**
@@ -118,6 +123,21 @@ namespace socketClient_win {
             string mdString = json.Serialize(md);
 
             return mdString;
+        }
+
+        /**
+         * 关闭资源
+         */
+        public void closeResourse() {
+            if (streamR != null) {
+                streamR.Close();
+            }
+            if (streamW != null) {
+                streamW.Close();
+            }
+            if (so != null) {
+                so.Close();
+            }
         }
 
     }

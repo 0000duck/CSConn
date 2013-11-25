@@ -132,8 +132,15 @@ namespace socketServer_win {
             Socket aSocket = (Socket)obj;
             while (true) {
                 try {
-                    Byte[] res = new Byte[byteLength];
-                    int length = aSocket.Receive(res);
+                    //Byte[] res = new Byte[byteLength];
+                    //int length = aSocket.Receive(res);
+                    //String resString = Encoding.UTF8.GetString(res, 0, length);
+
+                    NetworkStream ns = new NetworkStream(aSocket);
+                    StreamReader sr = new StreamReader(ns);
+                    string resultStr = sr.ReadLine();
+                    MsgData md = MsgData.DeserializeMsg(resultStr);
+                    String msg = md.msg;
 
                     //this.preventAlwaysLoop();
                     testcount++;
@@ -142,8 +149,7 @@ namespace socketServer_win {
                         throw new Exception("循环次数太多!");
                     }
 
-                    String resString = Encoding.UTF8.GetString(res, 0, length);
-                    appendToHistory("Msg -来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
+                    appendToHistory("Msg -来自" + aSocket.RemoteEndPoint.ToString() + "\n" + msg + "\n");
                 }
                 catch (Exception ex) {
                     appendToHistory("异常：" + ex.Message + "\n");
@@ -183,11 +189,8 @@ namespace socketServer_win {
          * 发送消息 - MsgData
          */
         public void sendMsgData(MsgData md, Socket so) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            String mdString = json.Serialize(md);
+            String mdString = MsgData.SerializeMsg(md);
 
-            // 待测试 sw.WriteLine(Object obj); 是否可以直接传 Object
-            //如果可以，传 Object ，不用转Json 格式
             NetworkStream ns = new NetworkStream(so);
             StreamWriter sw = new StreamWriter(ns);
             

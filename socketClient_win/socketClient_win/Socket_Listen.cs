@@ -49,6 +49,8 @@ namespace socketClient_win {
             Socket aSocket = (Socket)obj;
             while (true) {
                 try {
+
+
                     Byte[] res = new Byte[bytLength];
                     int length = aSocket.Receive(res);
                     String resString = Encoding.UTF8.GetString(res, 0, length);
