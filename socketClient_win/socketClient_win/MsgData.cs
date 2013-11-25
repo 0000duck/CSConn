@@ -8,6 +8,7 @@ namespace socketClient_win {
 
         public String msg;
         public String cliList;
+        public String userName;
 
         public MsgData(String msg = "", String cliList = "") {
             this.msg = msg;

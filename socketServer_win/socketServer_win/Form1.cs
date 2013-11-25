@@ -135,7 +135,12 @@ namespace socketServer_win {
                     Byte[] res = new Byte[byteLength];
                     int length = aSocket.Receive(res);
 
-                    this.preventAlwaysLoop();
+                    //this.preventAlwaysLoop();
+                    testcount++;
+                    if (testcount > 100) {
+                        testcount = 0;
+                        throw new Exception("循环次数太多!");
+                    }
 
                     String resString = Encoding.UTF8.GetString(res, 0, length);
                     appendToHistory("Msg -来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
@@ -156,12 +161,7 @@ namespace socketServer_win {
          * 阻止无限循环
          */
         public void preventAlwaysLoop() {
-            testcount++;
-            if (testcount > 100)
-            {
-                testcount = 0;
-                throw new Exception("循环次数太多!");
-            }
+
         }
 
         /**

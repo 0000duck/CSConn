@@ -140,6 +140,7 @@
             this.Controls.Add(this.tb_server_id);
             this.Name = "Form1";
             this.Text = "客户端";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
