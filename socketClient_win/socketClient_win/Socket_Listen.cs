@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 
 namespace socketClient_win {
-    class ListenSocket {
+    class Socket_Listen {
 
         public Socket listenS;
         public StreamReader streamR;

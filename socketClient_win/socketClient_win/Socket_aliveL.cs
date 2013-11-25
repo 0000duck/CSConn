@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 
 namespace socketClient_win {
-    class SocketList {
+    class Socket_aliveL {
 
         private List<Socket> alive_sockets = new List<Socket>();
 
@@ -25,9 +25,11 @@ namespace socketClient_win {
         }
 
         /**
-        * 发送信息给在线客户端  
-        * 返回 List<string> failedList
-        */
+         * 发送信息给在线客户端 
+         * 如果发送对象已经建立Socket连接，会采用已有连接
+         * 发送成功返回 ""
+         * 发送失败返回 error
+         */
         public string sendMsg(String msg, String ipAndPort) {
             String error = "";
 
@@ -35,7 +37,7 @@ namespace socketClient_win {
             int index = this.checkConnSocket(ipAndPort);
             Socket so = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             if (index == -1) {
-                IPEndPoint ipPort = CliSocket.translateIpEndPoint(ipAndPort);
+                IPEndPoint ipPort = Socket_Cli.translateIpEndPoint(ipAndPort);
                 so.Connect(ipPort);
                 alive_sockets.Add(so);
             }
@@ -49,7 +51,7 @@ namespace socketClient_win {
             }
             catch (Exception ex) {
                 error = ipAndPort + "发送失败\n" + ex.Message;
-                CliSocket.closeTheClose(so);
+                Socket_Cli.closeTheClose(so);
             }
 
             return error;

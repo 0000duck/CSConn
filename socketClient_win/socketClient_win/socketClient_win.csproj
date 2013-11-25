@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AliveSocketL.cs" />
-    <Compile Include="CliSocket.cs" />
-    <Compile Include="FileSocket.cs" />
+    <Compile Include="Socket_aliveL.cs" />
+    <Compile Include="Socket_Cli.cs" />
+    <Compile Include="Socket_File.cs" />
     <Compile Include="FileTranser.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -59,7 +59,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListenSocket.cs" />
+    <Compile Include="Socket_Listen.cs" />
     <Compile Include="MsgData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

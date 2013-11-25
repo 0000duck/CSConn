@@ -8,7 +8,7 @@ using System.Text;
 using System.Web.Script.Serialization;
 
 namespace socketClient_win {
-    class CliSocket {
+    class Socket_Cli {
 
         public Socket so;
         public StreamReader streamR;
@@ -41,19 +41,8 @@ namespace socketClient_win {
         * 接受服务端信息
         */
         public MsgData receiveServerMsgData() {
-
             string resultStr = streamR.ReadLine();
-            MsgData md = this.DeserializeMsg(resultStr);
-
-            return md;
-        }
-
-        /**
-        * 反序列数据
-        */
-        public MsgData DeserializeMsg(String mdString) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            MsgData md = json.Deserialize<MsgData>(mdString);
+            MsgData md = Socket_Cli.DeserializeMsg(resultStr);
 
             return md;
         }
@@ -85,7 +74,6 @@ namespace socketClient_win {
             return port;
         }
 
-
         /**
         * 关闭指定的Socket
         */
@@ -112,6 +100,25 @@ namespace socketClient_win {
             return ipPort;
         }
 
+        /**
+        * 反序列数据
+        */
+        public static MsgData DeserializeMsg(String mdString) {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            MsgData md = json.Deserialize<MsgData>(mdString);
+
+            return md;
+        }
+
+        /**
+         * 序列化为Jison
+         */
+        public static String SerializeMsg(MsgData md) {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            string mdString = json.Serialize(md);
+
+            return mdString;
+        }
 
     }
 }

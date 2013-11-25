@@ -6,7 +6,7 @@ using System.Text;
 
 namespace socketClient_win {
 
-    class FileSocket {
+    class Socket_File {
         public Socket so;
 
 

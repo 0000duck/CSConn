@@ -10,11 +10,11 @@ using System.Diagnostics;
 namespace socketClient_win {
     public partial class Form1 : Form {
 
-        private CliSocket cliS = new CliSocket();               //客户端的Socket
-        private ListenSocket lisS = new ListenSocket();         //监听的Socket
-        private FileSocket fileS = new FileSocket();            //文件的Socket
+        private Socket_Cli cliS = new Socket_Cli();               //客户端的Socket
+        private Socket_Listen lisS = new Socket_Listen();         //监听的Socket
+        private Socket_File fileS = new Socket_File();            //文件的Socket
 
-        private SocketList alive_list = new SocketList();       //Socket列表
+        private Socket_aliveL alive_list = new Socket_aliveL();       //Socket列表
 
         public Form1() {
             InitializeComponent();
@@ -254,20 +254,37 @@ namespace socketClient_win {
         }
 
         private void btn_file_Click(object sender, EventArgs e) {
-            sendFile();
+
+            List<string> TargetList = this.getSendTarget();
+            if (TargetList.Count == 0 || TargetList.Count > 1) {
+                appendToHistory("发送文件 - 一次只能选择一个目标接受");
+                return;
+            }
+            String target = TargetList[0];
+
+            sendFile(target);
         }
 
         /**
          * 发送文件
          */
-        public void sendFile() {
+        public void sendFile(String ipAndPort) {
             FileTranser ft = new FileTranser();
             String fileName = ft.getFileName();
-            MsgData data = new MsgData();
-            data.isFile = true;
-            ////
 
+            MsgData md = new MsgData();
+            md.isFile = true;
+            md.msg = fileName;
+            String mdString = Socket_Cli.SerializeMsg(md);
+
+            String error = alive_list.sendMsg(mdString, ipAndPort);
+            if (error.Length > 0) {
+                appendToHistory(error + "\n");
+                return;
+            }
         }
+
+
 
         private void button1_Click_1(object sender, EventArgs e) {
             FileTranser ft = new FileTranser();
