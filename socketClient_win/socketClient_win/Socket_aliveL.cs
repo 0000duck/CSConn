@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -47,7 +48,15 @@ namespace socketClient_win {
 
             //发送
             try {
-                so.Send(Encoding.UTF8.GetBytes(msg));
+                MsgData md = new MsgData();
+                md.msg = msg;
+                string mdString = Socket_Cli.SerializeMsg(md);
+
+                NetworkStream ns = new NetworkStream(so);
+                StreamWriter sw = new StreamWriter(ns);
+                sw.WriteLine(mdString);
+                sw.Flush();
+
             }
             catch (Exception ex) {
                 error = ipAndPort + "发送失败\n" + ex.Message;
@@ -66,6 +75,7 @@ namespace socketClient_win {
             List<string> failedList = new List<string>();
 
             foreach (String ipAndPort in target) {
+
                 string error = this.sendMsg(msg, ipAndPort);
                 if (error.Length > 0) {
                     failedList.Add(error);

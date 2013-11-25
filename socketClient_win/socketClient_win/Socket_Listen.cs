@@ -11,8 +11,6 @@ namespace socketClient_win {
     class Socket_Listen {
 
         public Socket listenS;
-        public StreamReader streamR;
-        public StreamWriter streamW;
         private int maxCount = 10;
         public Form1 f1;
         private int bytLength = 1000;
@@ -50,12 +48,15 @@ namespace socketClient_win {
             while (true) {
                 try {
 
+                    NetworkStream ns = new NetworkStream(aSocket);
+                    StreamReader sr = new StreamReader(ns);
+                    string resultStr = sr.ReadLine();
 
-                    Byte[] res = new Byte[bytLength];
-                    int length = aSocket.Receive(res);
-                    String resString = Encoding.UTF8.GetString(res, 0, length);
+                    MsgData md = MsgData.DeserializeMsg(resultStr);
+                    string msg = md.msg;
 
-                    f1.appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + resString + "\n");
+
+                    f1.appendToHistory("来自" + aSocket.RemoteEndPoint.ToString() + "\n" + msg + "\n");
                 }
                 catch (Exception ex) {
                     f1.appendToHistory("receive异常：" + ex.Message + "\n");

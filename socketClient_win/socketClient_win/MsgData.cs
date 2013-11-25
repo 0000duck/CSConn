@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
 
 namespace socketClient_win {
     public class MsgData {
@@ -18,6 +19,26 @@ namespace socketClient_win {
         }
 
         public MsgData() : this("", "", "") { }
+
+        /**
+        * 反序列数据
+        */
+        public static MsgData DeserializeMsg(String mdString) {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            MsgData md = json.Deserialize<MsgData>(mdString);
+
+            return md;
+        }
+
+        /**
+         * 序列化为Jison
+         */
+        public static String SerializeMsg(MsgData md) {
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            string mdString = json.Serialize(md);
+
+            return mdString;
+        }
 
     }
 }

@@ -132,13 +132,11 @@ namespace socketServer_win {
             Socket aSocket = (Socket)obj;
             while (true) {
                 try {
-                    //Byte[] res = new Byte[byteLength];
-                    //int length = aSocket.Receive(res);
-                    //String resString = Encoding.UTF8.GetString(res, 0, length);
 
                     NetworkStream ns = new NetworkStream(aSocket);
                     StreamReader sr = new StreamReader(ns);
                     string resultStr = sr.ReadLine();
+
                     MsgData md = MsgData.DeserializeMsg(resultStr);
                     String msg = md.msg;
 
