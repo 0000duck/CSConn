@@ -90,6 +90,9 @@ namespace socketClient_win {
         * 关闭指定的Socket
         */
         public static void closeTheClose(Socket so) {
+            if (so == null)
+                return;
+
             so.Shutdown(SocketShutdown.Both);
             so.Close();
         }
