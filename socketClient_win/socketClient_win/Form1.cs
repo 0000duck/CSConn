@@ -10,9 +10,11 @@ using System.Diagnostics;
 namespace socketClient_win {
     public partial class Form1 : Form {
 
-        private CliSocket cliS = new CliSocket();     
-        private ListenSocket lisS = new ListenSocket();
-        private List<Socket> soList = new List<Socket>();
+        private CliSocket cliS = new CliSocket();               //客户端的Socket
+        private ListenSocket lisS = new ListenSocket();         //监听的Socket
+        private FileSocket fileS = new FileSocket();            //文件的Socket
+
+        private SocketList alive_list = new SocketList();       //Socket列表
 
         public Form1() {
             InitializeComponent();
@@ -22,62 +24,43 @@ namespace socketClient_win {
 
         }
 
-        /*************************************************************** Socket 发送信息 ***************/
+        /***************************************************************  发送信息 ***************/
+        private void btn_send_Click(object sender, EventArgs e) {
+            String msg = this.getMsgContent();
+            if (msg.Length == 0) {
+                appendToHistory("请输入内容\n");
+                return;
+            }
 
-
-        /**
-         * 发送信息给在线客户端  
-         * 返回 List<string> failedList
-         */
-        public List<string> sendMsg2OnlineCli(String msg) {
-            List<string> failedList = new List<string>();
             List<String> target = this.getSendTarget();
+            List<string> failed = alive_list.sendMsg2SockeList(msg, target);
+            foreach (string error in failed) {
+                appendToHistory("sendCli异常：" + error);
+            }
 
-            foreach (String ipAndPort in target) {
-                int index = this.checkConnSocket(ipAndPort);
-                Socket so = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                if (index == -1) {
-                    IPEndPoint ipPort = CliSocket.translateIpEndPoint(ipAndPort);
-                    so.Connect(ipPort);
-                    soList.Add(so);
+            //发消息给服务端
+            try {
+                cliS.send2Server(msg);
+            }
+            catch (Exception ex) {
+                appendToHistory("sendServer异常:" + ex.Message);
+                if (cliS.so == null) {
+                    return;
                 }
-                else {
-                    so = soList[index];    
-                }
-
                 try {
-                    so.Send(Encoding.UTF8.GetBytes(msg));
+                    cliS.closeSocket();
                 }
-                catch (Exception ex) {
-                    string error = ipAndPort + "发送失败\n" + ex.Message;
-                    failedList.Add(error);
-
-                    if (so == null) {
-                        continue;
-                    }
-                    CliSocket.closeTheClose(so);
+                catch (Exception excep) {
+                    appendToHistory("close异常" + excep.Message);
                 }
             }
-            return failedList;
-        }
 
-        /**
-         * 检测ipAndPort 在链接中的socket是否已存在
-         */
-        public int checkConnSocket(String ipAndPort) {
-            for(int i =0; i< soList.Count; i++){
-                String soIpAndP = soList[i].RemoteEndPoint.ToString() ;
-                Debug.WriteLine("");
-                if (soIpAndP == ipAndPort) {
-                    return i;
-                }
-            }
-            return -1;
+            appendToHistory("本机:\n" + msg + "\n");
+            tb_msg.Text = "";
         }
 
 
-        /*************************************************************** END Socket 发送信息 ***********/
+        /*************************************************************** END  发送信息 ***********/
 
         /**
          * 启动监听 -- 线程
@@ -94,8 +77,7 @@ namespace socketClient_win {
             newThread.Start();
         }
 
-        /********************************************************** 界面的操作，与Socket无关 ********/
-
+        /********************************************************** 界面的操作 ********/
 
         /**
         * 获得发送目标
@@ -116,41 +98,6 @@ namespace socketClient_win {
             }
             return sendTarget;
         }
-
-
-        private void btn_send_Click(object sender, EventArgs e) {
-            String msg = this.getMsgContent();
-            if (msg.Length == 0) {
-                appendToHistory("请输入内容\n");
-                return;
-            }
-
-            List<string> failed = this.sendMsg2OnlineCli(msg);
-            foreach (string error in failed) {
-                appendToHistory("sendCli异常：" + error);
-            }
-
-            //发消息给服务端
-            try {
-                cliS.send2Server(msg);
-            }
-            catch (Exception ex) {
-                appendToHistory("sendServer异常:" + ex.Message);
-                if ( cliS.so == null) {
-                    return;
-                }
-                try {
-                    cliS.closeSocket();
-                }
-                catch (Exception excep) {
-                    appendToHistory("close异常" + excep.Message);
-                }
-            }
-
-            appendToHistory("本机:\n" + msg + "\n");
-            tb_msg.Text = "";
-        }
-
 
         private void btn_conn_Click(object sender, EventArgs e) {
             IPEndPoint ipPoint = this.getServerAdd();
@@ -196,14 +143,12 @@ namespace socketClient_win {
                 }
                 catch (Exception ex) {
                     appendToHistory("服务端 - Receive异常：\n" + ex.Message + "\n");
-                    //appendToHistory("断开与" + cliS.so.RemoteEndPoint.ToString() + "连接\n");
 
                     cliS.closeSocket();
                     break;
                 }
             }
         }
-
 
         /**
         * 获得服务器地址
@@ -219,8 +164,6 @@ namespace socketClient_win {
             return ipPort;
         }
 
-
-
         /**
         * 获得发送内容
         */
@@ -230,7 +173,7 @@ namespace socketClient_win {
             return msg;
         }
 
-        /********************************************************** 和界面的操作，与Socket无关 ********/
+        /********************************************************** 和界面的操作 ********/
 
 
         /*********************************************************** UI修改函数 *******/
@@ -309,5 +252,29 @@ namespace socketClient_win {
         private void Form1_FormClosed(object sender, FormClosedEventArgs e) {
 
         }
+
+        private void btn_file_Click(object sender, EventArgs e) {
+            sendFile();
+        }
+
+        /**
+         * 发送文件
+         */
+        public void sendFile() {
+            FileTranser ft = new FileTranser();
+            String fileName = ft.getFileName();
+            MsgData data = new MsgData();
+            data.isFile = true;
+            ////
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e) {
+            FileTranser ft = new FileTranser();
+            string folderPath = ft.getFolderPath();
+            tb_msg.Text = folderPath;
+        }
+
+
     }
 }

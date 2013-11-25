@@ -33,6 +33,8 @@
             this.tb_port = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.checked_lb_online = new System.Windows.Forms.CheckedListBox();
+            this.btn_file = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tb_server_id
@@ -123,11 +125,33 @@
             this.checked_lb_online.Size = new System.Drawing.Size(184, 276);
             this.checked_lb_online.TabIndex = 10;
             // 
+            // btn_file
+            // 
+            this.btn_file.Location = new System.Drawing.Point(37, 288);
+            this.btn_file.Name = "btn_file";
+            this.btn_file.Size = new System.Drawing.Size(72, 25);
+            this.btn_file.TabIndex = 11;
+            this.btn_file.Text = "发文件";
+            this.btn_file.UseVisualStyleBackColor = true;
+            this.btn_file.Click += new System.EventHandler(this.btn_file_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(221, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(48, 27);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 445);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btn_file);
             this.Controls.Add(this.checked_lb_online);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tb_port);
@@ -158,6 +182,8 @@
         private System.Windows.Forms.TextBox tb_port;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckedListBox checked_lb_online;
+        private System.Windows.Forms.Button btn_file;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -9,6 +9,7 @@ namespace socketClient_win {
         public String msg;
         public String cliList;
         public String userName;
+        public Boolean isFile = false;
 
         public MsgData(String msg = "", String cliList = "", String userName ="") {
             this.msg = msg;
