@@ -12,9 +12,10 @@ namespace socketServer_win {
         public String cliList;
         public String userName;
 
-        public MsgData(String msg = "", String cliList="") {
+        public MsgData(String msg = "", String cliList="", String userName="") {
             this.msg = msg;
             this.cliList = cliList;
+            this.userName = userName;
         }
 
     }

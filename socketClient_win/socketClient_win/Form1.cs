@@ -244,6 +244,10 @@ namespace socketClient_win {
             String[] cliArr = cliListStr.Split('&');
             for (int i = 0; i < cliArr.Length; i++) {
                 String cliInfo = i + ". " + cliArr[i];
+                if (cliArr[i] == cliS.so.LocalEndPoint.ToString()) {
+                    continue;
+                }
+
                 addToOnlieList_lb(cliInfo);
             }
         }
@@ -307,10 +311,3 @@ namespace socketClient_win {
         }
     }
 }
-
-
-
-
-
-
-
