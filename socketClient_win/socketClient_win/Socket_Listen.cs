@@ -14,8 +14,6 @@ namespace socketClient_win {
         public Socket listenS;
         private int maxCount = 10;
         public Form1 f1;
-        private int bytLength = 1000;
-        StreamWriter file_Stream;
 
         /**
          * 开始监听

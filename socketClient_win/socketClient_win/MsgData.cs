@@ -50,6 +50,7 @@ namespace socketClient_win {
          * 序列化为Jison
          */
         public static String SerializeMsg(MsgData md) {
+            Debug.Write(Json_static.MaxJsonLength);
             string mdString = Json_static.Serialize(md);
 
             return mdString;
