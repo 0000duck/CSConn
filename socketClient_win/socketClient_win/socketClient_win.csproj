@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Socket_aliveL.cs" />
     <Compile Include="Socket_Cli.cs" />
-    <Compile Include="Socket_File.cs" />
     <Compile Include="FileTranser.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

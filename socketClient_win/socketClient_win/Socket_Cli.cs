@@ -53,6 +53,8 @@ namespace socketClient_win {
         * 关闭和服务器的Socket
         */
         public void closeSocket() {
+            if (so == null)
+                return;
             so.Shutdown(SocketShutdown.Both);
             so.Close();
         }

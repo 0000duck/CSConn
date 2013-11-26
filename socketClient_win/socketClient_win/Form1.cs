@@ -12,7 +12,6 @@ namespace socketClient_win {
 
         private Socket_Cli cliS = new Socket_Cli();               //客户端的Socket
         private Socket_Listen lisS = new Socket_Listen();         //监听的Socket
-        private Socket_File fileS = new Socket_File();            //文件的Socket
 
         public Socket_aliveL alive_list = new Socket_aliveL();       //Socket列表
 
@@ -144,6 +143,8 @@ namespace socketClient_win {
                     }
                 }
                 catch (Exception ex) {
+                    if (this.IsDisposed)
+                        return;
                     appendToHistory("服务端 - Receive异常：\n" + ex.Message + "\n");
 
                     cliS.closeSocket();
@@ -235,7 +236,7 @@ namespace socketClient_win {
                 tb_history.Invoke(callback, msg);
             }
             else {
-                if (tb_history == null) {
+                if (tb_history == null ) {
                     return;
                 }
 
@@ -261,27 +262,48 @@ namespace socketClient_win {
         }
 
         private void btn_file_Click(object sender, EventArgs e) {
-
-            List<string> TargetList = this.getSendTarget();
-            if (TargetList.Count == 0 || TargetList.Count > 1) {
-                appendToHistory("发送文件 - 一次只能选择一个目标接受");
+            String ipAndPort = this.getOneTarget();
+            if (ipAndPort.Length == 0)
                 return;
+
+            String fileFullPath = FileTranser.getFileName();
+            if (fileFullPath.Length == 0)
+                return;
+
+            translateFile_simple(ipAndPort, fileFullPath);
+        }
+
+        /**
+         * 获得一个发送对象
+         */
+        public String getOneTarget() {
+            List<string> TargetList = this.getSendTarget();
+            if (TargetList.Count == 0) {
+                appendToHistory("发送文件 先选择发送目标");
+                return "";
+            }
+            if (TargetList.Count > 1) {
+                appendToHistory("发送文件 一次只能发送一个目标");
+                return "";
             }
             String ipAndPort = TargetList[0];
 
-            translateFile_Test(ipAndPort);
+            return ipAndPort;
         }
+
 
         /**
          * 传文件
          */
-        public void translateFile_Test(String ipAndPort) {
-            String fileFullPath = FileTranser.getFileName();
+        public void translateFile_simple(String ipAndPort, String fileFullPath) {
             string filename = System.IO.Path.GetFileName(fileFullPath);
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileFullPath);
+            long fileSize = fileInfo.Length;
 
             MsgData md = new MsgData();
             md.type = "FILE";
             md.fileName = filename;
+            md.fileSize = fileSize;
             md.msg = FileTranser.getFileContent(fileFullPath);
             String mdString = MsgData.SerializeMsg(md);
 
@@ -292,26 +314,6 @@ namespace socketClient_win {
             }
 
         }
-
-        /**
-         * 发送文件
-         */
-        public void sendFile(String ipAndPort) {
-            String fileName = FileTranser.getFileName();
-
-            MsgData md = new MsgData();
-            md.type = "FILE";
-            md.fileName = fileName;
-            String mdString = MsgData.SerializeMsg(md);
-
-            String error = alive_list.sendMsg(mdString, ipAndPort);
-            if (error.Length > 0) {
-                appendToHistory(error + "\n");
-                return;
-            }
-        }
-
-
 
         private void button1_Click_1(object sender, EventArgs e) {
             string folderPath = FileTranser.getFolderPath();

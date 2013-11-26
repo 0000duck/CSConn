@@ -19,6 +19,7 @@ namespace socketClient_win {
                                         //"FILE_STREAM"是文件流
         public string fileName = "";
         public string acceptfileName = "";
+        public long fileSize = 0;
         public Boolean acceptFile = false;
 
         static JavaScriptSerializer Json_static;

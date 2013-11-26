@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace socketClient_win {
     class Socket_Listen {
@@ -48,7 +49,6 @@ namespace socketClient_win {
             Socket aSocket = (Socket)obj;
             while (true) {
                 try {
-
                     NetworkStream ns = new NetworkStream(aSocket);
                     StreamReader sr = new StreamReader(ns);
                     string resultStr = sr.ReadLine();
@@ -60,19 +60,20 @@ namespace socketClient_win {
                             this.showMsg(md, ipAndPort);
                             break;
                         case "FILE":
+                            Boolean accecptable = this.isFileAccept(md);
+                            if (!accecptable)
+                                continue;
 
-                            Debug.WriteLine("BE FILE");
                             string folderP = FileTranser.getFolderPath();
                             if (folderP.Length == 0)
-                                return;
+                                continue;
 
-                            Debug.WriteLine("GET LOCAL FOLDER");
                             this.WriteFile(md, folderP);
                             break;
                     }
                 }
                 catch (Exception ex) {
-                    f1.appendToHistory("receive异常：" + ex.Message + "\n");
+                    f1.appendToHistory("receive异常：" + ex.Message + " - ");
                     f1.appendToHistory("断开与" + aSocket.RemoteEndPoint.ToString() + "连接\n");
                     aSocket.Shutdown(SocketShutdown.Both);
                     aSocket.Close();
@@ -82,7 +83,20 @@ namespace socketClient_win {
         }
 
         /**
-         * 接受文件
+         * 是否接受文件
+         */
+        public Boolean isFileAccept(MsgData md) {
+            String msg = "传来文件" + md.fileName + ", 文件大小"+ md.fileSize + "KB\n是否接受？";
+            string title = "文件传输";
+            if (MessageBox.Show(msg, title, MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                return true;
+            }
+            return false;
+            
+        }
+
+        /**
+         * 写入文件
          */
         public void WriteFile(MsgData md, String localFolder) {
              String fileName = localFolder + @"\" + md.fileName;
