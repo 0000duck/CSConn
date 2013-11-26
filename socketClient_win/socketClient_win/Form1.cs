@@ -267,9 +267,30 @@ namespace socketClient_win {
                 appendToHistory("发送文件 - 一次只能选择一个目标接受");
                 return;
             }
-            String target = TargetList[0];
+            String ipAndPort = TargetList[0];
 
-            sendFile(target);
+            translateFile_Test(ipAndPort);
+        }
+
+        /**
+         * 传文件
+         */
+        public void translateFile_Test(String ipAndPort) {
+            String fileFullPath = FileTranser.getFileName();
+            string filename = System.IO.Path.GetFileName(fileFullPath);
+
+            MsgData md = new MsgData();
+            md.type = "FILE";
+            md.fileName = filename;
+            md.msg = FileTranser.getFileContent(fileFullPath);
+            String mdString = Socket_Cli.SerializeMsg(md);
+
+            String error = alive_list.sendMsg(mdString, ipAndPort);
+            if (error.Length > 0) {
+                appendToHistory("文件传输异常："+error + "\n");
+                return;
+            }
+
         }
 
         /**
@@ -283,14 +304,11 @@ namespace socketClient_win {
             md.fileName = fileName;
             String mdString = Socket_Cli.SerializeMsg(md);
 
-            Debug.WriteLine("");
             String error = alive_list.sendMsg(mdString, ipAndPort);
             if (error.Length > 0) {
                 appendToHistory(error + "\n");
                 return;
             }
-
-             
         }
 
 

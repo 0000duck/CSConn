@@ -37,6 +37,7 @@ namespace socketClient_win {
                 f1.appendToHistory("连接来自[" + aSocket.RemoteEndPoint.ToString() + "]\n");
 
                 Thread newThread = new Thread(ReceiveMsg);
+                newThread.SetApartmentState(ApartmentState.STA);
                 newThread.IsBackground = true;
                 newThread.Start(aSocket);
             }
@@ -62,20 +63,22 @@ namespace socketClient_win {
                             break;
                         case "FILE":
 
-                            Debug.WriteLine("");
+                            Debug.WriteLine("BE FILE");
                             string folderP = FileTranser.getFolderPath();
                             if (folderP.Length == 0)
                                 return;
 
-                            Debug.WriteLine("");
-                            MsgData md_ack = new MsgData();
-                            md_ack.type = "FILE_ACK";
-                            md_ack.fileName = md.fileName;
-                            md_ack.acceptfileName = folderP + @"\" + md.msg;
-                            String md_ackString = MsgData.SerializeMsg(md_ack);
-                            f1.alive_list.sendMsg(md_ackString, ipAndPort);
-
+                            Debug.WriteLine("GET LOCAL FOLDER");
+                            this.WriteFile(md, folderP);
                             break;
+
+                            //MsgData md_ack = new MsgData();
+                            //md_ack.type = "FILE_ACK";
+                            //md_ack.fileName = md.fileName;
+                            //md_ack.acceptfileName = folderP + @"\" + md.msg;
+                            //String md_ackString = MsgData.SerializeMsg(md_ack);
+                            //f1.alive_list.sendMsg(md_ackString, ipAndPort);
+                            //break;
 
                         case "FILE_ACK":
                             String str = this.readerFile(md);
@@ -116,6 +119,26 @@ namespace socketClient_win {
         }
 
         /**
+         * 接受文件
+         */
+        public void WriteFile(MsgData md, String localFolder) {
+             String fileName = localFolder + @"\" + md.fileName;
+             StreamWriter sw = null;
+             try {
+                 sw = new StreamWriter(fileName);
+                 sw.WriteLine(md.msg);
+             }
+             catch (Exception ex) {
+                 f1.appendToHistory("写文件异常：" + ex.Message);
+             }
+             finally {
+                 if (sw != null)
+                     sw.Close();
+             }
+        
+        }
+
+        /**
          * 显示信息
          */
         public void showMsg(MsgData md, String remoteip) {
@@ -123,15 +146,6 @@ namespace socketClient_win {
             Debug.WriteLine("");
 
             f1.appendToHistory("来自" + remoteip + "\n" + msg + "\n");
-        }
-
-        /**
-         * 显示目录选择
-         */
-        public String showFolderChoose() {
-            String FolderPath = FileTranser.getFolderPath();
-
-            return FolderPath;
         }
 
         /**
