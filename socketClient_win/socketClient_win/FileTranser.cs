@@ -48,7 +48,7 @@ namespace socketClient_win {
         public static String getFileContent(String fileName) {
             String content = "";
             StreamReader sr = null;
-            using (sr = new StreamReader(fileName)) {
+            using (sr = new StreamReader(fileName, System.Text.Encoding.Default)) {
                 content = sr.ReadToEnd();
             }
 
