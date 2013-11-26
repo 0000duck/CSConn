@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 
 namespace socketClient_win {
-    class Socket_aliveL {
+    public class Socket_aliveL {
 
         private List<Socket> alive_sockets = new List<Socket>();
 
@@ -31,7 +31,7 @@ namespace socketClient_win {
          * 发送成功返回 ""
          * 发送失败返回 error
          */
-        public string sendMsg(String msg, String ipAndPort) {
+        public string sendMsg(String mdString, String ipAndPort) {
             String error = "";
 
             //获得Socket so
@@ -48,9 +48,6 @@ namespace socketClient_win {
 
             //发送
             try {
-                MsgData md = new MsgData();
-                md.msg = msg;
-                string mdString = Socket_Cli.SerializeMsg(md);
 
                 NetworkStream ns = new NetworkStream(so);
                 StreamWriter sw = new StreamWriter(ns);
@@ -75,8 +72,11 @@ namespace socketClient_win {
             List<string> failedList = new List<string>();
 
             foreach (String ipAndPort in target) {
+                MsgData md = new MsgData();
+                md.msg = msg;
+                string mdString = Socket_Cli.SerializeMsg(md);
 
-                string error = this.sendMsg(msg, ipAndPort);
+                string error = this.sendMsg(mdString, ipAndPort);
                 if (error.Length > 0) {
                     failedList.Add(error);
                 }

@@ -11,9 +11,9 @@ namespace socketClient_win {
         /**
          * 获得文件路径
          */
-        public String getFileName() {
+        public static String getFileName() {
             OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.InitialDirectory = @"f:\";
+            fileDialog.InitialDirectory = @"d:\";
             if (fileDialog.ShowDialog() == DialogResult.OK) {
                 String fileName = fileDialog.FileName;
                 return fileName;
@@ -25,7 +25,7 @@ namespace socketClient_win {
         /**
          * 获得文件夹路径
          */
-        public String getFolderPath() {
+        public static String getFolderPath() {
             FolderBrowserDialog folderD = new FolderBrowserDialog();
             folderD.Description = "选择路径";
             if (folderD.ShowDialog() == DialogResult.OK) {

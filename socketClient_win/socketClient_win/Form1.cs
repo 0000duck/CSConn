@@ -14,7 +14,7 @@ namespace socketClient_win {
         private Socket_Listen lisS = new Socket_Listen();         //监听的Socket
         private Socket_File fileS = new Socket_File();            //文件的Socket
 
-        private Socket_aliveL alive_list = new Socket_aliveL();       //Socket列表
+        public Socket_aliveL alive_list = new Socket_aliveL();       //Socket列表
 
         public Form1() {
             InitializeComponent();
@@ -276,26 +276,27 @@ namespace socketClient_win {
          * 发送文件
          */
         public void sendFile(String ipAndPort) {
-            FileTranser ft = new FileTranser();
-            String fileName = ft.getFileName();
+            String fileName = FileTranser.getFileName();
 
             MsgData md = new MsgData();
-            md.isFile = true;
-            md.msg = fileName;
+            md.type = "FILE";
+            md.fileName = fileName;
             String mdString = Socket_Cli.SerializeMsg(md);
 
+            Debug.WriteLine("");
             String error = alive_list.sendMsg(mdString, ipAndPort);
             if (error.Length > 0) {
                 appendToHistory(error + "\n");
                 return;
             }
+
+             
         }
 
 
 
         private void button1_Click_1(object sender, EventArgs e) {
-            FileTranser ft = new FileTranser();
-            string folderPath = ft.getFolderPath();
+            string folderPath = FileTranser.getFolderPath();
             tb_msg.Text = folderPath;
         }
 

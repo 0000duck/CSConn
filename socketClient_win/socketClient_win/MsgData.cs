@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
+using System.Diagnostics;
 
 namespace socketClient_win {
     public class MsgData {
@@ -11,6 +12,14 @@ namespace socketClient_win {
         public String cliList;
         public String userName;
         public Boolean isFile = false;
+        public string type = "";        //type 为"TEXT"是纯文本， 
+                                        //"FILE" 是文件, 
+                                        //"list" 是用户列表, 
+                                        //"FILE_ACK" 是确认接受文件
+                                        //"FILE_STREAM"是文件流
+        public string fileName = "";
+        public string acceptfileName = "";
+        public Boolean acceptFile = false;
 
         public MsgData(String msg = "", String cliList = "", String userName ="") {
             this.msg = msg;
@@ -27,6 +36,7 @@ namespace socketClient_win {
             JavaScriptSerializer json = new JavaScriptSerializer();
             MsgData md = json.Deserialize<MsgData>(mdString);
 
+            Debug.WriteLine("");
             return md;
         }
 
