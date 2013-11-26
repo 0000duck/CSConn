@@ -14,6 +14,16 @@ namespace socketClient_win {
         public StreamReader streamR;
         public StreamWriter streamW;
 
+        static JavaScriptSerializer Json_static;
+
+        /**
+         * 静态构造函数
+         */ 
+        static Socket_Cli(){
+            Json_static = new JavaScriptSerializer();
+            Json_static.MaxJsonLength = 20971520;
+        }
+
         /**
         * clientS 是否已连接
         */
@@ -51,7 +61,7 @@ namespace socketClient_win {
          * 客户端发送消息
          */ 
         public void send2Server(MsgData md) {
-            String mdString = Socket_Cli.SerializeMsg(md);
+            String mdString = MsgData.SerializeMsg(md);
             streamW.WriteLine(mdString);
             streamW.Flush();
 
@@ -62,7 +72,7 @@ namespace socketClient_win {
          */
         public MsgData receiveServerMsgData() {
             string resultStr = streamR.ReadLine();
-            MsgData md = Socket_Cli.DeserializeMsg(resultStr);
+            MsgData md = MsgData.DeserializeMsg(resultStr);
 
             return md;
         }
@@ -103,26 +113,6 @@ namespace socketClient_win {
             IPEndPoint ipPort = new IPEndPoint(ip, port);
 
             return ipPort;
-        }
-
-        /**
-        * 反序列数据
-        */
-        public static MsgData DeserializeMsg(String mdString) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            MsgData md = json.Deserialize<MsgData>(mdString);
-
-            return md;
-        }
-
-        /**
-         * 序列化为Jison
-         */
-        public static String SerializeMsg(MsgData md) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            string mdString = json.Serialize(md);
-
-            return mdString;
         }
 
         /**

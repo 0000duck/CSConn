@@ -21,6 +21,13 @@ namespace socketClient_win {
         public string acceptfileName = "";
         public Boolean acceptFile = false;
 
+        static JavaScriptSerializer Json_static;
+
+        static MsgData() {
+            Json_static = new JavaScriptSerializer();
+            Json_static.MaxJsonLength = 20971520;
+        }
+
         public MsgData(String msg = "", String cliList = "", String userName ="") {
             this.msg = msg;
             this.cliList = cliList;
@@ -33,8 +40,7 @@ namespace socketClient_win {
         * 反序列数据
         */
         public static MsgData DeserializeMsg(String mdString) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            MsgData md = json.Deserialize<MsgData>(mdString);
+            MsgData md = Json_static.Deserialize<MsgData>(mdString);
 
             Debug.WriteLine("");
             return md;
@@ -44,8 +50,7 @@ namespace socketClient_win {
          * 序列化为Jison
          */
         public static String SerializeMsg(MsgData md) {
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            string mdString = json.Serialize(md);
+            string mdString = Json_static.Serialize(md);
 
             return mdString;
         }

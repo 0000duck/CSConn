@@ -71,41 +71,6 @@ namespace socketClient_win {
                             Debug.WriteLine("GET LOCAL FOLDER");
                             this.WriteFile(md, folderP);
                             break;
-
-                            //MsgData md_ack = new MsgData();
-                            //md_ack.type = "FILE_ACK";
-                            //md_ack.fileName = md.fileName;
-                            //md_ack.acceptfileName = folderP + @"\" + md.msg;
-                            //String md_ackString = MsgData.SerializeMsg(md_ack);
-                            //f1.alive_list.sendMsg(md_ackString, ipAndPort);
-                            //break;
-
-                        case "FILE_ACK":
-                            String str = this.readerFile(md);
-
-                            Debug.WriteLine("");
-                            MsgData md_file_ack = new MsgData();
-                            md_file_ack.type = "FILE_STREAM";
-                            md_file_ack.msg = str;
-                            String md_file_ackString = MsgData.SerializeMsg(md_file_ack);
-                            f1.alive_list.sendMsg(md_file_ackString, ipAndPort);
-                            break;
-                        case "FILE_STREAM":
-                            String acceptFileName = md.acceptfileName;
-
-                            Debug.WriteLine("");
-                            try {
-                                file_Stream = new StreamWriter(acceptFileName);
-                            }
-                            catch (Exception ex) {
-                                f1.appendToHistory(ex.Message);
-                            }
-                            finally {
-                                if (file_Stream != null)
-                                    file_Stream.Close();
-                            }
-                            break;
-
                     }
                 }
                 catch (Exception ex) {

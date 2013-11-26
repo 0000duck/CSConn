@@ -74,7 +74,8 @@ namespace socketClient_win {
             foreach (String ipAndPort in target) {
                 MsgData md = new MsgData();
                 md.msg = msg;
-                string mdString = Socket_Cli.SerializeMsg(md);
+                md.type = "TEXT";
+                string mdString = MsgData.SerializeMsg(md);
 
                 string error = this.sendMsg(mdString, ipAndPort);
                 if (error.Length > 0) {

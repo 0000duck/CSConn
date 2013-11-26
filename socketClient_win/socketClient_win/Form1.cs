@@ -283,7 +283,7 @@ namespace socketClient_win {
             md.type = "FILE";
             md.fileName = filename;
             md.msg = FileTranser.getFileContent(fileFullPath);
-            String mdString = Socket_Cli.SerializeMsg(md);
+            String mdString = MsgData.SerializeMsg(md);
 
             String error = alive_list.sendMsg(mdString, ipAndPort);
             if (error.Length > 0) {
@@ -302,7 +302,7 @@ namespace socketClient_win {
             MsgData md = new MsgData();
             md.type = "FILE";
             md.fileName = fileName;
-            String mdString = Socket_Cli.SerializeMsg(md);
+            String mdString = MsgData.SerializeMsg(md);
 
             String error = alive_list.sendMsg(mdString, ipAndPort);
             if (error.Length > 0) {
